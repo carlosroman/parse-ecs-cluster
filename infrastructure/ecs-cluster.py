@@ -1,3 +1,7 @@
+"""
+This script generates a template that deploys an ECS cluster 
+to the provided VPC and subnets using an Auto Scaling Group
+"""
 from troposphere import Base64, FindInMap, GetAtt, GetAZs, Join, Output
 from troposphere import Parameter, Ref, Tags, Template
 from troposphere.cloudformation import Init, InitConfig, InitFiles, InitFile
