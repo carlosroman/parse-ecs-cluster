@@ -201,15 +201,15 @@ def main():
         'ECSLaunchConfiguration',
         ImageId=FindInMap('AWSRegionToAMI', Ref('AWS::Region'), 'AMI'),
         InstanceType=Ref(instance_type_param),
-        SecurityGroups=Ref(sg_param),
+        SecurityGroups=[Ref(sg_param)],
         IamInstanceProfile=Ref(ecs_instance_profile),
         UserData=Base64(Join('', [
             '#!/bin/bash\n',
             'yum install -y aws-cfn-bootstrap\n',
             '/opt/aws/bin/cfn-init -v --region ', Ref('AWS::Region'),
-            ' --stack ', Ref('AWS::StackName'), '--resource ECSLaunchConfiguration\n',
+            ' --stack ', Ref('AWS::StackName'), ' --resource ECSLaunchConfiguration\n',
             '/opt/aws/bin/cfn-signal -e $? --region ', Ref('AWS::Region'),
-            ' --stack ', Ref('AWS::StackName'), '--resource ECSAutoScalingGroup\n',
+            ' --stack ', Ref('AWS::StackName'), ' --resource ECSAutoScalingGroup\n',
         ])),
         Metadata=instance_metadata,
     ))
@@ -222,9 +222,7 @@ def main():
         MinSize=Ref(cluster_size_param),
         MaxSize=Ref(cluster_size_param),
         DesiredCapacity=Ref(cluster_size_param),
-        Tags=[
-            ASTags(Name=(Sub('${EnvironmentName} ECS host'), True))
-        ],
+        Tags=ASTags(Name=(Sub('${EnvironmentName} ECS host'), True)),
         CreationPolicy=CreationPolicy(
             ResourceSignal=ResourceSignal(
                 Timeout='PT15M'
