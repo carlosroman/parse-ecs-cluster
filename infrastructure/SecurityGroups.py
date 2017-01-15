@@ -15,8 +15,9 @@ def main():
     template.add_version("2010-09-09")
 
     template.add_description(
-        'AWS CloudFormation template that contains the security groups ' +
-        'required by our entire stack.')
+        'This template contains the security groups required by our '+
+        'entire stack. We create them in a seperate nested template, '+
+        'so they can be referenced by all of the other nested templates')
 
     # Parameters
     # EnvironmentName
@@ -47,7 +48,9 @@ def main():
         'ECSHostSecurityGroup',
         VpcId=Ref(vpc_param),
         GroupDescription='Access to the ECS hosts and the tasks/containers that run on them',
-        SecurityGroupIngress=[SecurityGroupRule(SourceSecurityGroupId=Ref(elb_security_group), IpProtocol='-1',)],
+        SecurityGroupIngress=[
+            SecurityGroupRule(SourceSecurityGroupId=Ref(elb_security_group), IpProtocol='-1',)
+        ],
         Tags=[{'Key': 'Name', 'Value' : Sub('${EnvironmentName}-ECS-Hosts')}]
     ))
 
