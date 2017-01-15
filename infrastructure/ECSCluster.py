@@ -122,6 +122,7 @@ def main():
                                 awacs.aws.Action('ecs', 'StartTelemetrySession'),
                                 awacs.aws.Action('ecs', 'Submit*'),
                                 awacs.aws.Action('logs', 'CreateLogStream'),
+                                awacs.aws.Action('logs', 'PutLogEvents'),
                                 awacs.aws.Action('ecr', 'BatchCheckLayerAvailability'),
                                 awacs.aws.Action('ecr', 'BatchGetImage'),
                                 awacs.aws.Action('ecr', 'GetDownloadUrlForLayer'),
